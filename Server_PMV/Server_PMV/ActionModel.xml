@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<model><!-- General Model -->
+<action>
+	<type>ActionType</type>
+	<data>dati riferiti all action type in base al suo tipo</data>
+</action>
+
+<action>
+	<type>GetMessages</type>
+	<data>
+		<message>
+			<IDMessaggio></IDMessaggio>
+			<Visualizza></Visualizza>
+			<Titolo></Titolo>
+			<Testo></Testo>
+		</message>
+		<message>
+			<IDMessaggio></IDMessaggio>
+			<Visualizza></Visualizza>
+			<Titolo></Titolo>
+			<Testo></Testo>
+		</message>
+	</data>
+</action>
+
+<action>
+	<type>GetMessage</type>
+	<data>
+		<message>
+			<IDMessaggio></IDMessaggio>
+			<Visualizza></Visualizza>
+			<Titolo></Titolo>
+			<Testo></Testo>
+		</message>
+	</data>
+</action>
+
+<action>
+	<type>AddMessage</type>
+	<data>
+		<newMessage>
+			<IDMessaggio></IDMessaggio>
+			<Visualizza></Visualizza>
+			<Titolo></Titolo>
+			<Testo></Testo>
+		</newMessage>
+	</data>
+</action>
+
+<action>
+	<type>EditMessage</type>
+	<data>
+		<IDMessaggio></IDMessaggio>
+		<editMessage>
+			<Visualizza></Visualizza>
+			<Titolo></Titolo>
+			<Testo></Testo>
+		</editMessage>
+	</data>
+</action>
+
+<action>
+	<type>DeleteMessage</type>
+	<data>
+		<IDMessaggio></IDMessaggio>
+	</data>
+</action>
+</model>

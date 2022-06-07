@@ -30,6 +30,7 @@
         <DataGrid Grid.Row="1" x:Name="GUI_listaMessaggiSalvati" IsReadOnly="True" AutoGenerateColumns="False" Margin="5,0" FontSize="18" SelectionChanged="GUI_listaMessaggiSalvati_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding IDMessaggio}" Header="ID" Width="0.5*"/>
+                <DataGridTextColumn Binding="{Binding Data}" Header="Data (MM/GG/AAAA)" Width="1.5*"/>
                 <DataGridCheckBoxColumn Binding="{Binding Visualizza}" Header="Visualizza" Width="*"/>
                 <DataGridTextColumn Binding="{Binding Testo}" Header="Testo" Width="5*"/>
                 
@@ -49,9 +50,12 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="1" Content="Testo Messaggio:" FontSize="15"/>
-                <TextBox Grid.Column="1" Grid.Row="1" x:Name="GUI_editMsg_text" FontSize="15"/>
+                <Label Grid.Column="0" Grid.Row="0" Content="Testo Messaggio:" FontSize="15"/>
+                <TextBox Grid.Column="1" Grid.Row="0" x:Name="GUI_editMsg_text" FontSize="15"/>
 
+                <Label Grid.Column="0" Grid.Row="1" Content="Data Messaggio:" FontSize="15"/>
+                <DatePicker Grid.Column="1" Grid.Row="1" x:Name="GUI_editMsg_dateTime" FontSize="15"/>
+                
                 <Label Grid.Column="0" Grid.Row="2" Content="Visualizza Messaggio:" FontSize="15"/>
                 <CheckBox  Grid.Column="1" Grid.Row="2" x:Name="GUI_editMsg_view" VerticalAlignment="Center" Margin="5,0,0,0" FontSize="15"/>
 

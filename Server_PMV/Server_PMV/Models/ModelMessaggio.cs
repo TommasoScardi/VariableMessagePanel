@@ -9,12 +9,13 @@ namespace Server_PMV.Models
     public class ModelMessaggio
     {
         public int IDMessaggio { get; set; }
+        public DateTime Data { get; set; }
         public bool Visualizza { get; set; }
         public string Testo { get; set; }
 
         public override string ToString()
         {
-            return $@"<message> <IDMessaggio>{IDMessaggio}</IDMessaggio> <Visualizza>{Visualizza}</Visualizza> <Testo>{Testo}</Testo> </message>";
+            return $@"<message> <IDMessaggio>{IDMessaggio}</IDMessaggio> <Data>{Data}</Data> <Visualizza>{Visualizza}</Visualizza> <Testo>{Testo}</Testo> </message>";
         }
 
         public string ToTinyString()

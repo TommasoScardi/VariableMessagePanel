@@ -82,9 +82,10 @@ namespace Client_Terminal_PMV
             {
                 msg.Add(new Models.ModelMessaggio()
                 {
-                    IDMessaggio = int.Parse(xmlNode.ChildNodes[0].InnerText),
-                    Visualizza = bool.Parse(xmlNode.ChildNodes[1].InnerText),
-                    Testo = xmlNode.ChildNodes[2].InnerText
+                    IDMessaggio = int.Parse(xmlNode.SelectSingleNode("IDMessaggio").InnerText),
+                    Data = DateTime.Parse(xmlNode.SelectSingleNode("Data").InnerText),
+                    Visualizza = bool.Parse(xmlNode.SelectSingleNode("Visualizza").InnerText),
+                    Testo = xmlNode.SelectSingleNode("Testo").InnerText
                 });
             }
             return msg;

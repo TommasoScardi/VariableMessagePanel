@@ -85,37 +85,50 @@ namespace Server_PMV
                     // Show the data on the console.  
                     Console.WriteLine($"[{DateTime.UtcNow.ToString("T")}] -- {data}\n");
 
-                    //Eseuo l'azione richiesta dal client parsando l'XML ricevuto
-                    actionType = Action.Parse(data, out actionXmlData);
-                    switch (actionType)
+                    try
                     {
-                        case ActionType.NotAction:
-                            clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>NotAction</type></action>");
-                            break;
-                        case ActionType.TestConn:
-                            clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>TestConn</type></action>");
-                            break;
-                        case ActionType.GetMessages:
-                            clientResponse = Action.Send(Action.GetMessages());
-                            break;
-                        case ActionType.GetMessagesToView:
-                            clientResponse = Action.Send(Action.GetMessages(true));
-                            break;
-                        case ActionType.AddMessage:
-                            clientResponse = Action.Send(Action.AddMessage(actionXmlData));
-                            break;
-                        case ActionType.EditMessage:
-                            clientResponse = Action.Send(Action.EditMessage(actionXmlData));
-                            break;
-                        case ActionType.MakeMessageToView:
-                            clientResponse = Action.Send(Action.MakeMessageToView(actionXmlData));
-                            break;
-                        case ActionType.DeleteMessage:
-                            clientResponse = Action.Send(Action.DeleteMessage(actionXmlData));
-                            break;
-                        default:
-                            clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><type>NotAction</type></action>");
-                            break;
+                        //Eseuo l'azione richiesta dal client parsando l'XML ricevuto
+                        actionType = Action.Parse(data, out actionXmlData);
+                        switch (actionType)
+                        {
+                            case ActionType.NotAction:
+                                clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>NotAction</type></action>");
+                                break;
+                            case ActionType.TestConn:
+                                clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>TestConn</type></action>");
+                                break;
+                            case ActionType.GetMessages:
+                                clientResponse = Action.Send(Action.GetMessages());
+                                break;
+                            case ActionType.GetMessagesToView:
+                                clientResponse = Action.Send(Action.GetMessages(true));
+                                break;
+                            case ActionType.AddMessage:
+                                clientResponse = Action.Send(Action.AddMessage(actionXmlData));
+                                break;
+                            case ActionType.EditMessage:
+                                clientResponse = Action.Send(Action.EditMessage(actionXmlData));
+                                break;
+                            case ActionType.MakeMessageToView:
+                                clientResponse = Action.Send(Action.MakeMessageToView(actionXmlData));
+                                break;
+                            case ActionType.DeleteMessage:
+                                clientResponse = Action.Send(Action.DeleteMessage(actionXmlData));
+                                break;
+                            case ActionType.AINMTD:
+                                clientResponse = Action.Send(Action.AskIfNewMessagesToDisplay(actionXmlData));
+                                break;
+                            default:
+                                clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><type>NotAction</type></action>");
+                                break;
+                        }
+
+                        Console.WriteLine($"[{DateTime.UtcNow.ToString("T")}] -- Risposta Client -- {clientResponse}\n");
+                    }
+                    catch (Exception e)
+                    {
+                        clientResponse = Action.Send("<?xml version=\"1.0\" encoding=\"utf-8\" ?><type>ExcAction</type></action>");
+                        Console.WriteLine($"[{DateTime.UtcNow.ToString("T")}] -- ERRORE -- {e}\n");
                     }
 
                     // Echo the data back to the client.  
@@ -124,13 +137,12 @@ namespace Server_PMV
                     handler.Send(msg);
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
-                    Console.WriteLine($"[{DateTime.UtcNow.ToString("T")}] -- Risposta Client -- {clientResponse}\n");
                 }
 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine($"[{DateTime.UtcNow.ToString("T")}] -- ERRORE -- {e}\n");
             }
 
             Console.WriteLine("\nPremi qualunque tasto per terminare ...");

@@ -112,6 +112,7 @@ namespace Client_Terminal_PMV
             if (msgSel != null)
             {
                 GUI_editMsg_text.Text = msgSel.Testo;
+                GUI_editMsg_dateTime.SelectedDate = msgSel.Data;
                 GUI_editMsg_view.IsChecked = msgSel.Visualizza;
                 GUI_editMsg_view.Click += GUI_editMsg_view_Click;
             }
@@ -133,6 +134,7 @@ namespace Client_Terminal_PMV
             GUI_listaMessaggiSalvati.SelectedIndex = -1;
 
             GUI_editMsg_text.Text = String.Empty;
+            GUI_editMsg_dateTime.Text = String.Empty;
             GUI_editMsg_view.IsChecked = false;
             GUI_editMsg_view.Click -= GUI_editMsg_view_Click;
 
@@ -143,7 +145,7 @@ namespace Client_Terminal_PMV
         {
             try
             {
-                if (GUI_editMsg_text.Text.Length == 0)
+                if (GUI_editMsg_text.Text.Length == 0 || GUI_editMsg_dateTime.Text.Length == 0)
                 {
                     MessageBox.Show("Campi vuoti"); ;
                     return;
@@ -157,6 +159,7 @@ namespace Client_Terminal_PMV
                 _messaggi.Add(Action.AddMessage(ServerIP, new Models.ModelMessaggio()
                 {
                     Testo = GUI_editMsg_text.Text,
+                    Data = GUI_editMsg_dateTime.SelectedDate,
                     Visualizza = (bool)GUI_editMsg_view.IsChecked
                 }));
                 UpdateGUI();
@@ -171,7 +174,7 @@ namespace Client_Terminal_PMV
         {
             try
             {
-                if (GUI_editMsg_text.Text.Length == 0)
+                if (GUI_editMsg_text.Text.Length == 0 || GUI_editMsg_dateTime.Text.Length == 0)
                 {
                     MessageBox.Show("Campi vuoti"); ;
                     return;
@@ -183,6 +186,7 @@ namespace Client_Terminal_PMV
                 }
 
                 msgSel.Testo = GUI_editMsg_text.Text;
+                msgSel.Data = GUI_editMsg_dateTime.SelectedDate;
                 msgSel.Visualizza = (bool)GUI_editMsg_view.IsChecked;
 
                 Action.EditMessage(ServerIP, msgSel);

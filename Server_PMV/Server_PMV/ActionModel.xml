@@ -40,6 +40,7 @@
 	<data>
 		<newMessage>
 			<IDMessaggio></IDMessaggio>
+			<Data></Data>
 			<Visualizza></Visualizza>
 			<Titolo></Titolo>
 			<Testo></Testo>
@@ -52,6 +53,7 @@
 	<data>
 		<IDMessaggio></IDMessaggio>
 		<editMessage>
+			<Data></Data>
 			<Visualizza></Visualizza>
 			<Titolo></Titolo>
 			<Testo></Testo>
@@ -63,6 +65,13 @@
 	<type>DeleteMessage</type>
 	<data>
 		<IDMessaggio></IDMessaggio>
+	</data>
+</action>
+	
+<action>
+	<type>AINMTD</type>
+	<data>
+		<Data></Data> <!--Data e ora-->
 	</data>
 </action>
 </model>

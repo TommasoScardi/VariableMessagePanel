@@ -7,6 +7,8 @@ namespace Server_PMV
     public class Action
     {
         const int TEXT_CHAR_MAX_LEN = 75;
+        const string Start_XML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?><action>";
+        const string End_XML = "</action>";
 
         public static ActionType Parse(string recXml, out XmlNode data)
         {
@@ -38,12 +40,12 @@ namespace Server_PMV
         public static string GetMessages(bool soloDaVisualizzare = false) //GetMessagesToView
         {
             List<Models.ModelMessaggio> messages = DBManager.GetMessaggi(soloDaVisualizzare);
-            string data = $"<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>Response</type> <data length=\"{messages.Count}\">";
+            string data = Start_XML + $"<type>Response</type> <data length=\"{messages.Count}\">";
             foreach (Models.ModelMessaggio message in messages)
             {
                 data += !soloDaVisualizzare ? message.ToString() : message.ToTinyString();
             }
-            data += "</data></action>";
+            data += "</data>" + End_XML;
             return data;
         }
 
@@ -56,14 +58,15 @@ namespace Server_PMV
             }
             Models.ModelMessaggio newMsg = new Models.ModelMessaggio()
             {
+                Data = msg.SelectSingleNode("Data") != null ? DateTime.Parse(msg.SelectSingleNode("Data").InnerText) : DateTime.UnixEpoch,
                 Visualizza = bool.Parse(msg.SelectSingleNode("Visualizza").InnerText),
                 Testo = msg.SelectSingleNode("Testo").InnerText
             };
             DBManager.AddMessaggio(ref newMsg);
 
-            return "<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>Response</type> <data>" +
+            return Start_XML + "<type>Response</type> <data>" +
                 /*ATTENZIONE AL FORMATO PER I CLIENT*/$"<IDMessaggio>{newMsg.IDMessaggio}</IDMessaggio>" +
-                "</data></action>";
+                "</data>" + End_XML;
         }
 
         public static string EditMessage(XmlNode datiMsg)
@@ -76,12 +79,13 @@ namespace Server_PMV
             Models.ModelMessaggio newMsg = new Models.ModelMessaggio()
             {
                 IDMessaggio = int.Parse(msg.SelectSingleNode("IDMessaggio").InnerText),
+                Data = msg.SelectSingleNode("Data") != null ? DateTime.Parse(msg.SelectSingleNode("Data").InnerText) : DateTime.UnixEpoch,
                 Visualizza = bool.Parse(msg.SelectSingleNode("Visualizza").InnerText),
                 Testo = msg.SelectSingleNode("Testo").InnerText
             };
             DBManager.EditMessage(newMsg);
 
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>Response</type> <data>OK</data></action>";
+            return Start_XML + $"<type>Response</type> <data>OK</data>" + End_XML;
         }
 
         public static string MakeMessageToView(XmlNode datiMsg)
@@ -94,7 +98,7 @@ namespace Server_PMV
             };
             DBManager.EditMessage(newMsg, true);
 
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>Response</type> <data>OK</data></action>";
+            return Start_XML + $"<type>Response</type> <data>OK</data>" + End_XML;
         }
 
         public static string DeleteMessage(XmlNode datiMsg)
@@ -106,7 +110,14 @@ namespace Server_PMV
             };
             DBManager.DeleteMessage(newMsg);
 
-            return $"<?xml version=\"1.0\" encoding=\"utf-8\" ?><action><type>Response</type> <data>OK</data></action>";
+            return Start_XML + $"<type>Response</type> <data>OK</data>" + End_XML;
+        }
+
+        public static string AskIfNewMessagesToDisplay(XmlNode datiMsg) //AINMTD
+        {
+            DateTime searchStartingFrom = datiMsg.SelectSingleNode("Data") != null ? DateTime.Parse(datiMsg.SelectSingleNode("Data").InnerText) : DateTime.UnixEpoch;
+            int newMsgToDisplay = DBManager.SearchNewMessagesToDisplay(searchStartingFrom) ? 1 : 0;
+            return Start_XML + $"<type>Response</type> <data>{newMsgToDisplay}</data>" + End_XML;
         }
 
         public static string Send(string xmlResponse)
@@ -123,6 +134,8 @@ namespace Server_PMV
 
         GetMessages = 11,
         GetMessagesToView = 12,
+
+        AINMTD = 15, //AskIfNewMessagesToDisplay
 
         AddMessage = 21,
         EditMessage = 22,
